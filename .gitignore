@@ -1,0 +1,95 @@
+# Compiled Object files
+*.o
+*.ko
+*.obj
+
+# Libraries
+*.lib
+*.a
+*.la
+
+# Shared objects
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.map
+*.pdb
+
+# Build artifacts
+build/
+Build/
+out/
+Release/
+Debug/
+cmake-build-*/
+CMakeFiles/
+*.i*86*.cmake
+*.cmake
+
+# JetBrains IDEs (IntelliJ, PyCharm, CLion)
+.idea/
+*.iws
+*.ipr
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# NetBeans
+nbproject/
+
+# Qt Creator
+*.pro.user
+
+# C++ build system files
+*.gcno
+*.gcda
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*~
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# CMake
+CMakeLists.txt.user
+cmake_install.cmake
+
+# CLion
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/shelf/
+.idea/runConfigurations/
+
+# Test binary
+stack_util
+
+# Coverage
+*.profraw
+*.profdata
+*.gcov
+*.info
+
+# Editor backups
+*.~
+
+# Other files
+*.orig
+*.rej
