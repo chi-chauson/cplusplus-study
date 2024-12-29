@@ -19,7 +19,10 @@ add_executable(StudyLibTest TwoPointersTest.cpp
         PrefixSumTest.cpp
         HashingTest.cpp
         LinkedListUtilTest.cpp
-        StackUtilTest.cpp)
+        StackUtilTest.cpp
+        MovingAverageTest.cpp
+        MonotonicTest.cpp
+        StockSpannerTest.cpp)
 
 # Link the test executable against gtest, gtest_main, and the TwoPointers library
 target_link_libraries(StudyLibTest
