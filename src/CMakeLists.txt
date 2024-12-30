@@ -15,7 +15,9 @@ add_library(StudyLib TwoPointers.cpp TwoPointers.h
         Monotonic.cpp
         Monotonic.h
         StockSpanner.cpp
-        StockSpanner.h)
+        StockSpanner.h
+        TreeUtil.cpp
+        TreeUtil.h)
 
 # You can add include directories if needed
 target_include_directories(StudyLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
