@@ -23,7 +23,8 @@ add_executable(StudyLibTest TwoPointersTest.cpp
         MovingAverageTest.cpp
         MonotonicTest.cpp
         StockSpannerTest.cpp
-        TreeUtilTest.cpp)
+        TreeUtilTest.cpp
+)
 
 # Link the test executable against gtest, gtest_main, and the TwoPointers library
 target_link_libraries(StudyLibTest

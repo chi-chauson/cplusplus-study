@@ -16,8 +16,12 @@ struct TreeNode {
 };
 
 class TreeUtil {
+private:
+    int maxDifference;
+    void dfs(TreeNode* node, int currentMin, int currentMax);
 public:
     int minDepth(TreeNode* root);
+    int maxAncestorDiff(TreeNode* root);
 
 };
 
