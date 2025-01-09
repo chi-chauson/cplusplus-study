@@ -208,3 +208,42 @@ bool GraphUtil::isValid(int r, int c, int rows, int cols) {
     return (r >= 0 && r < rows && c >= 0 && c < cols);
 }
 
+int GraphUtil::dfsReachableNodes(int current, const std::vector<std::vector<int>> &adj, const std::unordered_set<int> &restrictedSet,
+                                 std::vector<bool> &visited) {
+    // Mark the current node as visited
+    visited[current] = true;
+
+    // Initialize count with the current node
+    int count = 1;
+
+    // Iterate through all neighbors
+    for (const int& neighbor : adj[current]) {
+        // If the neighbor is not visited and not restricted, continue DFS
+        if (!visited[neighbor] && restrictedSet.find(neighbor) == restrictedSet.end()) {
+            count += dfsReachableNodes(neighbor, adj, restrictedSet, visited);
+        }
+    }
+
+    return count;
+}
+
+int GraphUtil::reachableNodes(int n, const vector<std::vector<int>> &edges, const vector<int> &restricted) {
+    // Initialize adjacency list
+    std::vector<std::vector<int>> adj(n, std::vector<int>());
+    for (const auto& edge : edges) {
+        int a = edge[0];
+        int b = edge[1];
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+
+    // Convert restricted array to a set for O(1) lookups
+    std::unordered_set<int> restrictedSet(restricted.begin(), restricted.end());
+
+    // Initialize visited array
+    std::vector<bool> visited(n, false);
+
+    // Start DFS from node 0
+    return dfsReachableNodes(0, adj, restrictedSet, visited);
+}
+

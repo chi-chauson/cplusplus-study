@@ -6,6 +6,7 @@
 #define PLAYGROUND_GRAPHUTIL_H
 
 #include <vector>
+#include <unordered_set>
 
 class GraphUtil {
 public:
@@ -20,6 +21,8 @@ public:
      * @return the maximum area of an island, or 0 if there is no island
      */
     int maxAreaOfIsland(std::vector<std::vector<int>>& grid);
+    int reachableNodes(int n, const std::vector<std::vector<int>>& edges, const std::vector<int>& restricted);
+
 private:
     void dfsIsland(std::vector<std::vector<char>> &grid, int startRow, int startCol, int rows, int cols);
     void dfsCountComponents(int startNode, const std::vector <std::vector<int>> &adjacencyList, std::vector<bool> &visited);
@@ -33,6 +36,7 @@ private:
      * @return true if the cell is within bounds, false otherwise
      */
     bool isValid(int r, int c, int rows, int cols);
+    int dfsReachableNodes(int current, const std::vector<std::vector<int>>& adj, const std::unordered_set<int>& restrictedSet, std::vector<bool>& visited);
 };
 
 

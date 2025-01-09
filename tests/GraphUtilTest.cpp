@@ -431,3 +431,81 @@ TEST_F(GraphUtilTest, LargeGridWithMixedIslands_ReturnsCorrectMaximumArea) {
     int expected = 7;
     EXPECT_EQ(graphUtil.maxAreaOfIsland(grid), expected);
 }
+
+// Test Case: Basic Example One
+TEST_F(GraphUtilTest, BasicExampleOne) {
+    int n = 7;
+    std::vector<std::vector<int>> edges = {
+            {0,1},{1,2},{3,1},{4,0},{0,5},{5,6}
+    };
+    std::vector<int> restricted = {4,5};
+    int expected = 4; // Nodes [0,1,2,3]
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
+
+// Test Case: Basic Example Two
+TEST_F(GraphUtilTest, BasicExampleTwo) {
+    int n = 7;
+    std::vector<std::vector<int>> edges = {
+            {0,1},{0,2},{0,5},{0,4},{3,2},{6,5}
+    };
+    std::vector<int> restricted = {4,2,1};
+    int expected = 3; // Nodes [0,5,6]
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
+
+// Test Case: No Restricted Nodes
+TEST_F(GraphUtilTest, NoRestrictedNodes) {
+    int n = 5;
+    std::vector<std::vector<int>> edges = {
+            {0,1},{0,2},{1,3},{1,4}
+    };
+    std::vector<int> restricted = {};
+    int expected = 5; // All nodes are reachable
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
+
+// Test Case: All Except Zero Restricted
+TEST_F(GraphUtilTest, AllExceptZeroRestricted) {
+    int n = 3;
+    std::vector<std::vector<int>> edges = {
+            {0,1},{0,2}
+    };
+    std::vector<int> restricted = {1,2};
+    int expected = 1; // Only node 0 is reachable
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
+
+// Test Case: Single Path with Multiple Restrictions
+TEST_F(GraphUtilTest, SinglePathWithMultipleRestrictions) {
+    int n = 10;
+    std::vector<std::vector<int>> edges = {
+            {0,1},{1,2},{2,3},{3,4},{4,5},{5,6},{6,7},{7,8},{8,9}
+    };
+    std::vector<int> restricted = {3,6,9};
+    int expected = 3; // Nodes [0,1,2]
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
+
+// Test Case: Disconnected After Restrictions
+TEST_F(GraphUtilTest, DisconnectedAfterRestrictions) {
+    int n = 6;
+    std::vector<std::vector<int>> edges = {
+            {0,1},{1,2},{1,3},{3,4},{3,5}
+    };
+    std::vector<int> restricted = {1};
+    int expected = 1; // Only node 0 is reachable
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
+
+// Test Case: Handle Small Grid with Specific Restrictions
+TEST_F(GraphUtilTest, HandleSmallGridWithSpecificRestrictions) {
+    // Constructing a small tree for clarity
+    int n = 7;
+    std::vector<std::vector<int>> edges = {
+            {0,1}, {1,2}, {1,3}, {1,4}, {4,5}, {5,6}
+    };
+    std::vector<int> restricted = {4, 6}; // Restrict nodes 4 and 6
+    int expected = 4; // Nodes [0,1,2,3] are reachable
+    EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
+}
