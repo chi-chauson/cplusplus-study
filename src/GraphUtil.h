@@ -22,6 +22,15 @@ public:
      */
     int maxAreaOfIsland(std::vector<std::vector<int>>& grid);
     int reachableNodes(int n, const std::vector<std::vector<int>>& edges, const std::vector<int>& restricted);
+    /**
+     * Finds the length of the shortest clear path in a binary matrix from the top-left
+     * cell (0, 0) to the bottom-right cell (n-1, n-1). A clear path consists of cells
+     * with value 0, and movement is allowed in 8 directions.
+     *
+     * @param grid the n x n binary matrix
+     * @return the length of the shortest clear path, or -1 if no such path exists
+     */
+    int shortestPathBinaryMatrix(const std::vector<std::vector<int>>& grid);
 
 private:
     void dfsIsland(std::vector<std::vector<char>> &grid, int startRow, int startCol, int rows, int cols);
@@ -35,7 +44,16 @@ private:
      * @param cols  total number of columns in the grid
      * @return true if the cell is within bounds, false otherwise
      */
-    bool isValid(int r, int c, int rows, int cols);
+    bool isValid(int r, int c, int rows, int cols) const;
+    /**
+     * Checks if the given cell coordinates are within the grid boundaries.
+     *
+     * @param row the row index
+     * @param col the column index
+     * @param n the size of the grid
+     * @return true if the cell is within bounds, false otherwise
+     */
+    bool isValidWithSize(int row, int col, int n) const;
     int dfsReachableNodes(int current, const std::vector<std::vector<int>>& adj, const std::unordered_set<int>& restrictedSet, std::vector<bool>& visited);
 };
 

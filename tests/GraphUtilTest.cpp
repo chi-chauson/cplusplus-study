@@ -509,3 +509,85 @@ TEST_F(GraphUtilTest, HandleSmallGridWithSpecificRestrictions) {
     int expected = 4; // Nodes [0,1,2,3] are reachable
     EXPECT_EQ(graphUtil.reachableNodes(n, edges, restricted), expected);
 }
+
+TEST_F(GraphUtilTest, ShortestPath_SimplePathExists) {
+    std::vector<std::vector<int>> grid = {
+            {0, 1},
+            {1, 0}
+    };
+    int expected = 2;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return the shortest path length when a simple path exists.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_PathBlockedAtStart) {
+    std::vector<std::vector<int>> grid = {
+            {1, 0},
+            {0, 0}
+    };
+    int expected = -1;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return -1 when the starting cell is blocked.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_PathBlockedAtEnd) {
+    std::vector<std::vector<int>> grid = {
+            {0, 0},
+            {0, 1}
+    };
+    int expected = -1;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return -1 when the ending cell is blocked.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_NoPathExists) {
+    std::vector<std::vector<int>> grid = {
+            {0, 1, 1},
+            {1, 1, 1},
+            {1, 1, 0}
+    };
+    int expected = -1;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return -1 when no clear path exists.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_LargeGridWithPath) {
+    std::vector<std::vector<int>> grid = {
+            {0, 0, 0, 0},
+            {1, 1, 0, 1},
+            {0, 0, 0, 0},
+            {0, 1, 1, 0}
+    };
+    int expected = 5; // Corrected expected value
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return the correct path length in a larger grid with a valid path.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_SingleCellGrid) {
+    std::vector<std::vector<int>> grid = {
+            {0}
+    };
+    int expected = 1;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return 1 for a single-cell grid that is clear.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_SingleCellBlocked) {
+    std::vector<std::vector<int>> grid = {
+            {1}
+    };
+    int expected = -1;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should return -1 for a single-cell grid that is blocked.";
+}
+
+TEST_F(GraphUtilTest, ShortestPath_PathWithDiagonalMoves) {
+    std::vector<std::vector<int>> grid = {
+            {0, 1, 1},
+            {1, 0, 1},
+            {1, 1, 0}
+    };
+    int expected = 3;
+    int actual = graphUtil.shortestPathBinaryMatrix(grid);
+    EXPECT_EQ(actual, expected) << "Should correctly account for diagonal moves in the path.";
+}

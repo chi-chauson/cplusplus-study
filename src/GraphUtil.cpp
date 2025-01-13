@@ -3,6 +3,7 @@
 //
 #include <unordered_map>
 #include <stack>
+#include <queue>
 #include "GraphUtil.h"
 
 using namespace std;
@@ -204,7 +205,7 @@ int GraphUtil::maxAreaOfIsland(vector<std::vector<int>> &grid) {
     return maxArea;
 }
 
-bool GraphUtil::isValid(int r, int c, int rows, int cols) {
+bool GraphUtil::isValid(int r, int c, int rows, int cols) const {
     return (r >= 0 && r < rows && c >= 0 && c < cols);
 }
 
@@ -246,4 +247,64 @@ int GraphUtil::reachableNodes(int n, const vector<std::vector<int>> &edges, cons
     // Start DFS from node 0
     return dfsReachableNodes(0, adj, restrictedSet, visited);
 }
+
+int GraphUtil::shortestPathBinaryMatrix(const vector<std::vector<int>> &grid) {
+    int n = grid.size();
+
+    // If the start or end cell is blocked, return -1
+    if (grid.empty() || grid[0][0] != 0 || grid[n - 1][n - 1] != 0) {
+        return -1;
+    }
+
+    // Directions: up, down, left, right, and the four diagonals
+    const std::vector<std::pair<int, int>> directions = {
+            {-1,  0}, // Up
+            { 1,  0}, // Down
+            { 0, -1}, // Left
+            { 0,  1}, // Right
+            {-1, -1}, // Up-Left
+            {-1,  1}, // Up-Right
+            { 1, -1}, // Down-Left
+            { 1,  1}  // Down-Right
+    };
+
+    // Initialize visited matrix
+    std::vector<std::vector<bool>> visited(n, std::vector<bool>(n, false));
+    std::queue<std::tuple<int, int, int>> q; // (row, col, path_length)
+
+    // Start BFS from (0,0) with path length 1
+    q.emplace(0, 0, 1);
+    visited[0][0] = true;
+
+    while (!q.empty()) {
+        auto [row, col, pathLength] = q.front();
+        q.pop();
+
+        // If we've reached the destination, return the path length
+        if (row == n - 1 && col == n - 1) {
+            return pathLength;
+        }
+
+        // Explore all 8 directions
+        for (const auto& dir : directions) {
+            int newRow = row + dir.first;
+            int newCol = col + dir.second;
+
+            // Check boundaries and if the cell is unvisited and clear
+            if (isValidWithSize(newRow, newCol, n) && !visited[newRow][newCol] && grid[newRow][newCol] == 0) {
+                q.emplace(newRow, newCol, pathLength + 1);
+                visited[newRow][newCol] = true;
+            }
+        }
+    }
+
+    // If destination is not reachable
+    return -1;
+}
+
+bool GraphUtil::isValidWithSize(int row, int col, int n) const {
+    return row >= 0 && row < n && col >= 0 && col < n;
+}
+
+
 
