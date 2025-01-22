@@ -32,6 +32,16 @@ public:
      */
     int shortestPathBinaryMatrix(const std::vector<std::vector<int>>& grid);
 
+    /**
+     * Returns the number of steps in the shortest path from the entrance
+     * to the nearest exit in the maze.
+     *
+     * @param maze      A 2D vector of '.' and '+' characters.
+     * @param entrance  A vector<int> with size 2: [entranceRow, entranceCol].
+     * @return          The shortest number of steps to an exit, or -1 if none exists.
+     */
+    int nearestExit(std::vector<std::vector<char>>& maze, const std::vector<int>& entrance);
+
 private:
     void dfsIsland(std::vector<std::vector<char>> &grid, int startRow, int startCol, int rows, int cols);
     void dfsCountComponents(int startNode, const std::vector <std::vector<int>> &adjacencyList, std::vector<bool> &visited);
@@ -54,6 +64,12 @@ private:
      * @return true if the cell is within bounds, false otherwise
      */
     bool isValidWithSize(int row, int col, int n) const;
+
+    /**
+     * Checks if a cell is on the border of the maze.
+     */
+    bool isBorderCell(int row, int col, int m, int n);
+
     int dfsReachableNodes(int current, const std::vector<std::vector<int>>& adj, const std::unordered_set<int>& restrictedSet, std::vector<bool>& visited);
 };
 

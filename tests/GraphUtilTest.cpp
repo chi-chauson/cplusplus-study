@@ -591,3 +591,78 @@ TEST_F(GraphUtilTest, ShortestPath_PathWithDiagonalMoves) {
     int actual = graphUtil.shortestPathBinaryMatrix(grid);
     EXPECT_EQ(actual, expected) << "Should correctly account for diagonal moves in the path.";
 }
+
+// TEST 1: Multiple exits, expecting shortest path of 1 step.
+TEST_F(GraphUtilTest, MultipleExitsShouldReturnOne) {
+    std::vector<std::vector<char>> maze = {
+            {'+', '+', '.', '+'},
+            {'.', '.', '.', '+'},
+            {'+', '+', '+', '.'}
+    };
+    std::vector<int> entrance = {1, 2}; // [row=1, col=2]
+
+    int steps = graphUtil.nearestExit(maze, entrance);
+    EXPECT_EQ(1, steps);
+}
+
+// --------------------------------------------------------------------------
+// TEST 2: A single exit, expecting 2 steps.
+TEST_F(GraphUtilTest, SingleExitShouldReturnTwo) {
+    std::vector<std::vector<char>> maze = {
+            {'+', '+', '+'},
+            {'.', '.', '.'},
+            {'+', '+', '+'}
+    };
+    std::vector<int> entrance = {1, 0};
+
+    int steps = graphUtil.nearestExit(maze, entrance);
+    EXPECT_EQ(2, steps);
+}
+
+// --------------------------------------------------------------------------
+// TEST 3: No exit available. Should return -1.
+TEST_F(GraphUtilTest, NoExitShouldReturnMinusOne) {
+    std::vector<std::vector<char>> maze = {
+            {'.', '+'}
+    };
+    std::vector<int> entrance = {0, 0};
+
+    int steps = graphUtil.nearestExit(maze, entrance);
+    EXPECT_EQ(-1, steps);
+}
+
+// --------------------------------------------------------------------------
+// TEST 4: Entrance is on the border, but it doesn't count as an exit.
+TEST_F(GraphUtilTest, MazeEntranceOnBorderButDoesntCountAsExit) {
+    // Maze layout:
+    // (0,0) '.'   (0,1) '.'
+    // (1,0) '+'   (1,1) '.'
+    //
+    // The entrance is (0,0). It's on the border but is NOT an exit.
+    // The nearest exit is (0,1), 1 step away.
+    std::vector<std::vector<char>> maze = {
+            {'.', '.'},
+            {'+', '.'}
+    };
+    std::vector<int> entrance = {0, 0};
+
+    int steps = graphUtil.nearestExit(maze, entrance);
+    EXPECT_EQ(1, steps);
+}
+
+// --------------------------------------------------------------------------
+// TEST 5: A complex maze; we just ensure it finds a path (distance > 0).
+TEST_F(GraphUtilTest, ComplexMazeShouldReturnNonNegativeDistance) {
+    std::vector<std::vector<char>> maze = {
+            {'.', '.', '+', '.', '.'},
+            {'.', '+', '+', '.', '+'},
+            {'.', '.', '.', '.', '.'},
+            {'+', '.', '+', '+', '.'},
+            {'.', '.', '.', '+', '.'}
+    };
+    std::vector<int> entrance = {2, 2};
+
+    int steps = graphUtil.nearestExit(maze, entrance);
+    // Just check that it's a valid positive number, not -1
+    EXPECT_GT(steps, 0) << "Should find a valid exit path in the complex maze.";
+}

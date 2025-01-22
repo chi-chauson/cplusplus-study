@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <stack>
 #include <queue>
+#include <array>
 #include "GraphUtil.h"
 
 using namespace std;
@@ -304,6 +305,61 @@ int GraphUtil::shortestPathBinaryMatrix(const vector<std::vector<int>> &grid) {
 
 bool GraphUtil::isValidWithSize(int row, int col, int n) const {
     return row >= 0 && row < n && col >= 0 && col < n;
+}
+
+int GraphUtil::nearestExit(vector<std::vector<char>> &maze, const vector<int> &entrance) {
+    if (maze.empty() || maze[0].empty()) {
+        return -1;
+    }
+
+    int m = static_cast<int>(maze.size());
+    int n = static_cast<int>(maze[0].size());
+
+    // Directions: up, down, left, right
+    std::vector<std::array<int, 2>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    // Create a queue for BFS; each element holds {row, col, distance}
+    std::queue<std::array<int, 3>> q;
+    q.push({entrance[0], entrance[1], 0});
+
+    // Mark the entrance as visited by replacing '.' with '+'
+    maze[entrance[0]][entrance[1]] = '+';
+
+    while (!q.empty()) {
+        auto [row, col, distance] = q.front();
+        q.pop();
+
+        for (auto& dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            // 1) Ensure we stay in bounds
+            if (newRow < 0 || newRow >= m || newCol < 0 || newCol >= n) {
+                continue;
+            }
+
+            // 2) Skip walls or already visited cells
+            if (maze[newRow][newCol] == '+') {
+                continue;
+            }
+
+            // 3) Check if it's on the border -> found an exit
+            if (isBorderCell(newRow, newCol, m, n)) {
+                return distance + 1;
+            }
+
+            // Mark visited and push to queue
+            maze[newRow][newCol] = '+';
+            q.push({newRow, newCol, distance + 1});
+        }
+    }
+
+    // If no exit found, return -1
+    return -1;
+}
+
+bool GraphUtil::isBorderCell(int row, int col, int m, int n) {
+    return (row == 0 || row == m - 1 || col == 0 || col == n - 1);
 }
 
 
