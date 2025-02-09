@@ -666,3 +666,43 @@ TEST_F(GraphUtilTest, ComplexMazeShouldReturnNonNegativeDistance) {
     // Just check that it's a valid positive number, not -1
     EXPECT_GT(steps, 0) << "Should find a valid exit path in the complex maze.";
 }
+
+TEST_F(GraphUtilTest, ClassicBoardExample) {
+    // Example from typical puzzle statements => 4 moves.
+    std::vector<std::vector<int>> board = {
+            {-1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1},
+            {-1, -1, -1, -1, -1, -1},
+            {-1, 35, -1, -1, 13, -1},
+            {-1, -1, -1, -1, -1, -1},
+            {-1, 15, -1, -1, -1, -1}
+    };
+    EXPECT_EQ(4, graphUtil.snakesAndLadders(board));
+}
+
+TEST_F(GraphUtilTest, TwoByTwoQuickJump) {
+    // 2x2 board => minimal moves = 1
+    std::vector<std::vector<int>> board = {
+            {-1, -1},
+            {-1,  3}
+    };
+    EXPECT_EQ(1, graphUtil.snakesAndLadders(board));
+}
+
+TEST_F(GraphUtilTest, UnreachableCase) {
+    // 2x2 board, everything leads back to square 1 => can't reach 4 => -1
+    std::vector<std::vector<int>> board = {
+            { 1,  1},
+            {-1,  1}
+    };
+    EXPECT_EQ(-1, graphUtil.snakesAndLadders(board));
+}
+
+TEST_F(GraphUtilTest, MinimalTwoByTwoEmpty) {
+    // 2x2 board, no snakes/ladders => can roll a 3 to go from 1 to 4 in 1 move
+    std::vector<std::vector<int>> board = {
+            {-1, -1},
+            {-1, -1}
+    };
+    EXPECT_EQ(1, graphUtil.snakesAndLadders(board));
+}

@@ -5,6 +5,8 @@
 #include <stack>
 #include <queue>
 #include <array>
+#include <utility>
+#include <algorithm>
 #include "GraphUtil.h"
 
 using namespace std;
@@ -360,6 +362,53 @@ int GraphUtil::nearestExit(vector<std::vector<char>> &maze, const vector<int> &e
 
 bool GraphUtil::isBorderCell(int row, int col, int m, int n) {
     return (row == 0 || row == m - 1 || col == 0 || col == n - 1);
+}
+
+int GraphUtil::snakesAndLadders(const vector<std::vector<int>> &board) {
+    int n = board.size();
+    // We will create an array "cells" of size (n*n + 1).
+    // cells[label] = (row, col) in the board.
+    std::vector<std::pair<int,int>> cells(n*n + 1);
+
+    std::vector<int> columns(n);
+    for (int i = 0; i < n; ++i) {
+        columns[i] = i;
+    }
+
+    // Label squares 1..n*n in boustrophedon style
+    int label = 1;
+    for (int row = n - 1; row >= 0; --row) {
+        for (int col : columns) {
+            cells[label++] = {row, col};
+        }
+        std::reverse(columns.begin(), columns.end());
+    }
+
+    // dist[x] = minimum number of moves to reach square x; -1 if unvisited
+    std::vector<int> dist(n*n + 1, -1);
+    dist[1] = 0;
+
+    std::queue<int> q;
+    q.push(1);
+
+    while (!q.empty()) {
+        int curr = q.front();
+        q.pop();
+
+        for (int step = 1; step <= 6; ++step) {
+            int next = curr + step;
+            if (next > n*n) break;
+
+            auto [r, c] = cells[next];
+            int destination = (board[r][c] != -1) ? board[r][c] : next;
+
+            if (dist[destination] == -1) {
+                dist[destination] = dist[curr] + 1;
+                q.push(destination);
+            }
+        }
+    }
+    return dist[n*n];
 }
 
 

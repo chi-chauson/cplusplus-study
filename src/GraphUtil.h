@@ -42,6 +42,15 @@ public:
      */
     int nearestExit(std::vector<std::vector<char>>& maze, const std::vector<int>& entrance);
 
+    /**
+     * Computes the minimum number of moves to reach cell n*n
+     * in a Snakes and Ladders board using BFS.
+     *
+     * @param board n x n board of integers (-1 or destination squares)
+     * @return Minimum number of moves or -1 if unreachable
+     */
+    int snakesAndLadders(const std::vector<std::vector<int>>& board);
+
 private:
     void dfsIsland(std::vector<std::vector<char>> &grid, int startRow, int startCol, int rows, int cols);
     void dfsCountComponents(int startNode, const std::vector <std::vector<int>> &adjacencyList, std::vector<bool> &visited);
