@@ -19,7 +19,9 @@ add_library(StudyLib TwoPointers.cpp TwoPointers.h
         TreeUtil.cpp
         TreeUtil.h
         GraphUtil.cpp
-        GraphUtil.h)
+        GraphUtil.h
+        ImplicitGraph.cpp
+        ImplicitGraph.h)
 
 # You can add include directories if needed
 target_include_directories(StudyLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
