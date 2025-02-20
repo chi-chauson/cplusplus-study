@@ -43,6 +43,10 @@ public:
                                      const std::vector<double> &values,
                                      const std::vector<std::vector<std::string>> &queries);
 
+    int minMutation(const std::string& startGene,
+                    const std::string& endGene,
+                    const std::vector<std::string>& bank);
+
 private:
     // Returns the neighbors of a given lock state.
     // For each of the 4 digits, you can move the wheel up or down by 1.

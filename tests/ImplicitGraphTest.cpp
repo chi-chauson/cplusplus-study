@@ -50,3 +50,72 @@ TEST(ImplicitGraphTest, CalcEquation_Basic) {
     EXPECT_DOUBLE_EQ(results[3], 1.0);
     EXPECT_DOUBLE_EQ(results[4], -1.0);
 }
+
+TEST(ImplicitGraphTest, ExampleOneMutation) {
+    ImplicitGraph ig;
+    // "AACCGGTT" -> "AACCGGTA" is one direct mutation
+    std::string start = "AACCGGTT";
+    std::string end   = "AACCGGTA";
+    std::vector<std::string> bank = {"AACCGGTA"};
+
+    int result = ig.minMutation(start, end, bank);
+    EXPECT_EQ(1, result);
+}
+
+TEST(ImplicitGraphTest, MultipleSteps) {
+    ImplicitGraph ig;
+    // Example path: AACCGGTT -> AACCGGTA -> AAACGGTA
+    std::string start = "AACCGGTT";
+    std::string end   = "AAACGGTA";
+    std::vector<std::string> bank = {
+            "AACCGGTA",
+            "AAACGGTA",
+            "AACCGCTA",
+            "AAACGCTA"
+    };
+
+    // BFS path could be:
+    //   AACCGGTT -> AACCGGTA (1 mutation)
+    //   AACCGGTA -> AAACGGTA (2 mutations)
+    // So expect 2
+    int result = ig.minMutation(start, end, bank);
+    EXPECT_EQ(2, result);
+}
+
+TEST(ImplicitGraphTest, NoPossibleMutation) {
+    ImplicitGraph ig;
+    // "AAAAACCC" -> "AACCCCCC" but "AACCCCCC" is NOT in the bank, unreachable
+    std::string start = "AAAAACCC";
+    std::string end   = "AACCCCCC";
+    std::vector<std::string> bank = {
+            "AAAACCCC",
+            "AAACCCCC"
+            // missing "AACCCCCC"
+    };
+
+    int result = ig.minMutation(start, end, bank);
+    EXPECT_EQ(-1, result);
+}
+
+TEST(ImplicitGraphTest, StartEqualsEnd) {
+    ImplicitGraph ig;
+    // If start == end, we need 0 mutations
+    std::string start = "AACCGGTT";
+    std::string end   = "AACCGGTT";
+    std::vector<std::string> bank = {"AACCGGTA"};
+    // Bank doesn't matter here since start == end
+
+    int result = ig.minMutation(start, end, bank);
+    EXPECT_EQ(0, result);
+}
+
+TEST(ImplicitGraphTest, EndNotInBank) {
+    ImplicitGraph ig;
+    // Bank doesn't contain end, so there's no valid path
+    std::string start = "AACCGGTT";
+    std::string end   = "AACCGGTA";
+    std::vector<std::string> bank = {"AAAAAACC", "GGGGGGGG"};
+
+    int result = ig.minMutation(start, end, bank);
+    EXPECT_EQ(-1, result);
+}

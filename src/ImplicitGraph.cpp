@@ -122,3 +122,70 @@ double ImplicitGraph::answerQuery(const std::string &start, const std::string &e
     // No path found
     return -1.0;
 }
+
+int ImplicitGraph::minMutation(const std::string &startGene, const std::string &endGene,
+                               const std::vector <std::string> &bank) {
+    // If start == end, no mutations are needed
+    if (startGene == endGene) {
+        return 0;
+    }
+
+    // Convert bank to set for O(1) lookups
+    std::unordered_set<std::string> bankSet(bank.begin(), bank.end());
+
+    // If endGene not in bank, no valid path (assuming endGene != startGene here)
+    if (bankSet.find(endGene) == bankSet.end()) {
+        return -1;
+    }
+
+    // Possible characters for each position
+    static const std::vector<char> chars = {'A', 'C', 'G', 'T'};
+
+    // Standard BFS
+    std::queue<std::string> queue;
+    queue.push(startGene);
+
+    // Keep track of visited nodes to avoid revisiting
+    std::unordered_set<std::string> visited;
+    visited.insert(startGene);
+
+    int mutations = 0; // BFS "level"
+
+    while (!queue.empty()) {
+        int size = static_cast<int>(queue.size());
+        // Process the current level fully
+        for (int i = 0; i < size; i++) {
+            std::string current = queue.front();
+            queue.pop();
+
+            if (current == endGene) {
+                return mutations;
+            }
+
+            // Try to mutate one character at a time
+            for (int pos = 0; pos < (int)current.size(); pos++) {
+                for (char c : chars) {
+                    if (current[pos] == c) {
+                        continue;
+                    }
+                    // Generate new gene
+                    std::string mutated = current;
+                    mutated[pos] = c;
+
+                    // Check if it is valid and not visited
+                    if (bankSet.find(mutated) != bankSet.end() &&
+                        visited.find(mutated) == visited.end())
+                    {
+                        visited.insert(mutated);
+                        queue.push(mutated);
+                    }
+                }
+            }
+        }
+        // Increment mutation count after processing one BFS level
+        mutations++;
+    }
+
+    // If we exit the loop, endGene was not reachable
+    return -1;
+}

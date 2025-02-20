@@ -26,6 +26,7 @@ add_executable(StudyLibTest TwoPointersTest.cpp
         TreeUtilTest.cpp
         GraphUtilTest.cpp
         ImplicitGraphTest.cpp
+        HeapUtilTest.cpp
 )
 
 # Link the test executable against gtest, gtest_main, and the TwoPointers library
